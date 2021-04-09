@@ -6,3 +6,10 @@ data/pan21-author-profiling-training-2021-03-14.zip
 data/err.txt
 models/
 results/
+
+.idea/
+
+src/simpletransformers-bert/cache/
+src/simpletransformers-bert/outputs/
+src/simpletransformers-bert/runs/
+
