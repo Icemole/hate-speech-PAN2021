@@ -1,3 +1,5 @@
+env/
+
 ## Just in case, don't push data that we needed permission to get.
 data/en
 data/es
