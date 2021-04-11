@@ -1,5 +1,5 @@
 {
-   "model_type":  "roberta",
+   "model_type": "roberta",
    "model_name": "roberta-base",
    "output_dir": "outputs/",
    "cache_dir": "cache/",
@@ -9,7 +9,7 @@
    "train_batch_size": 8,
    "eval_batch_size": 8,
    "gradient_accumulation_steps": 1,
-   "num_train_epochs": 1,
+   "num_train_epochs": 5,
    "weight_decay": 0,
    "learning_rate": 4e-5,
    "adam_epsilon": 1e-8,
@@ -21,6 +21,6 @@
    "save_steps": 2000,
    "eval_all_checkpoints": true,
    "use_tensorboard": false,
-   "overwrite_output_dir": false,
+   "overwrite_output_dir": true,
    "reprocess_input_data": false
 }

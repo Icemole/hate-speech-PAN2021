@@ -4,10 +4,13 @@ import random
 
 def split_dataset(filepath, eval_percent, dev_percent, shuffle=True, seed=123):
     random.seed(seed)
-    with open(filepath, 'r') as f, \
-        open(f"{filepath.rsplit('.', 1)[0]}_train.{filepath.rsplit('.', 1)[1]}", 'w') as ftrain, \
-        open(f"{filepath.rsplit('.', 1)[0]}_eval.{filepath.rsplit('.', 1)[1]}", 'w') as feval, \
-        open(f"{filepath.rsplit('.', 1)[0]}_dev.{filepath.rsplit('.', 1)[1]}", 'w') as fdev:
+    with open(filepath, 'r') as f, open(f"{filepath.rsplit('.', 1)[0]}.train.{filepath.rsplit('.', 1)[1]}", 'w') as ftrain:
+        feval = None
+        if eval_percent > 0:
+            feval = open(f"{filepath.rsplit('.', 1)[0]}.eval.{filepath.rsplit('.', 1)[1]}", 'w')
+        fdev = None
+        if dev_percent > 0:
+            fdev = open(f"{filepath.rsplit('.', 1)[0]}.dev.{filepath.rsplit('.', 1)[1]}", 'w')
 
         nlines = len(f.readlines())
         f.seek(0)
@@ -35,12 +38,12 @@ def split_dataset(filepath, eval_percent, dev_percent, shuffle=True, seed=123):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Translator of news from Spanish to English')
-    parser.add_argument('--dataset', default='../data/nonhaters_en.txt',
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dataset', default='../data/nonhaters_es.tok.txt',
                         help='Path to dataset, requires that said dataset is split in lines')
-    parser.add_argument('--eval_percent', type=float, default='0.025',
+    parser.add_argument('--eval_percent', type=float, default='0.1',
                         help='Percentage of lines assigned to the evaluation set')
-    parser.add_argument('--dev_percent', type=float, default='0.025',
+    parser.add_argument('--dev_percent', type=float, default='0.0',
                         help='Percentage of lines assigned to the development set')
     args = parser.parse_args()
 
