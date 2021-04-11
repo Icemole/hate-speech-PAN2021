@@ -9,7 +9,8 @@ def main():
     parser.add_argument('--model_name', default='model.bin')
     args = parser.parse_args()
 
-    model = fasttext.train_supervised(input=args.train)
+    # use loss="hs" (hierarchical softmax) for big datasets to approximate the softmax, speeding up training at the cost of some precision
+    model = fasttext.train_supervised(input=args.train, lr=1.0, epoch=25, wordNgrams=2, dim=50)
     model.test(args.eval)
     model.save_model(args.model_name)
 
