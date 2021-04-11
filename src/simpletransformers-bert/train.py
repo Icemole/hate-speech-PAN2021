@@ -5,12 +5,12 @@ from simpletransformers.classification import ClassificationModel
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Translator of news from Spanish to English')
+    parser = argparse.ArgumentParser()
     parser.add_argument('--c0_train', default='../../data/nonhaters_en.txt')
     parser.add_argument('--c1_train', default='../../data/haters_en.txt')
     parser.add_argument('--c0_eval', default='../../data/nonhaters_en.txt')
     parser.add_argument('--c1_eval', default='../../data/haters_en.txt')
-    parser.add_argument('--model_args', default='model_args.json')
+    parser.add_argument('--model_args', default='bertweet-base.json')
     args = parser.parse_args()
 
     # Build training dataframe
@@ -52,7 +52,7 @@ def main():
     # Instantiate model and train over training df
     model_args_file = open(args.model_args, 'r')
     model_args = json.load(model_args_file)
-    model = ClassificationModel(model_type=args['model_type'], model_name=args['model_name'],
+    model = ClassificationModel(model_type=model_args['model_type'], model_name=model_args['model_name'],
                                 args=model_args, use_cuda=False)
     model.train_model(train_df)
 

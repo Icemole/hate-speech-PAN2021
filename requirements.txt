@@ -1,3 +1,5 @@
 simpletransformers
 pandas
 torch
+nltk
+fasttext
