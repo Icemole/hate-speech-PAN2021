@@ -10,8 +10,7 @@ def get_text_from_xml_line(line):
 
 ## Extracts all text from all .xml files of a single language
 ## passed as a parameter, given the format of the PAN2021 competition.
-def extract_lang(lang, group_writer):
-    filepath = "data/plain_text/"
+def extract_lang(lang, filepath, group_writer):
     if group_writer:
         nonhaters_file = filepath + "nonhaters_" + lang + "_grouped.txt"
         haters_file = filepath + "haters_" + lang + "_grouped.txt"
@@ -53,10 +52,13 @@ def extract_lang(lang, group_writer):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--group_writer', type=bool, default=False)
+    parser.add_argument('--extract_to',help='Path to dataset' default='data/plain_text/',
+                        help='Where to write the output of the data extraction')
+    parser.add_argument('--group_writer', type=bool, default=False,
+                        help='If set to True, one line of the extracted text will correspond to all sentences of a single writer')
     args = parser.parse_args()
-    extract_lang("en", args.group_writer)
-    extract_lang("es", args.group_writer)
+    extract_lang("en", args.extract_to, args.group_writer)
+    extract_lang("es", args.extract_to, args.group_writer)
 
 
 if __name__ == "__main__":

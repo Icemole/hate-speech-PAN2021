@@ -41,13 +41,22 @@ The whole project has several dependencies, most of which are covered by executi
 tar xzf data.zip
 
 # Extract the sentences from the data
-python 01-extract_text.py
+python src/01-extract_text.py --extract_to data/plain_text
 
 # Clean the text
-python 02-clean.py
+python src/02-clean.py --dataset data/plain_text/nonhaters_es.txt
+python src/02-clean.py --dataset data/plain_text/nonhaters_en.txt
+python src/02-clean.py --dataset data/plain_text/haters_es.txt
+python src/02-clean.py --dataset data/plain_text/haters_en.txt
+
+mkdir data/tok
+mv data/plain_text/*tok* data/tok
 
 # Split the dataset in a train/dev/eval partition
-python 03-split_dataset.py
+python src/03-split_dataset.py --dataset data/plain_text/nonhaters_es.tok.txt
+python src/03-split_dataset.py --dataset data/plain_text/nonhaters_en.tok.txt
+python src/03-split_dataset.py --dataset data/plain_text/haters_es.tok.txt
+python src/03-split_dataset.py --dataset data/plain_text/haters_en.tok.txt
 ```
 
 ## Example: n-grams
