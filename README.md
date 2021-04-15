@@ -63,7 +63,7 @@ python src/03-split_dataset.py --dataset data/plain_text/haters_en.tok.txt
 ```bash
 cd src/ngrams
 
-# Extract n-grams (modify $ORDER to )
+# Extract n-grams
 ./04-extract_ngrams.sh
 
 # Obtain the accuracy of each developed n-gram with respect to the text
