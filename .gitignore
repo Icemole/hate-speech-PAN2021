@@ -13,6 +13,8 @@ data/err.txt
 models/
 results/
 
+src/fasttext-supervised/pan2021*
+
 src/simpletransformers-bert/cache/
 src/simpletransformers-bert/outputs/
 src/simpletransformers-bert/runs/
