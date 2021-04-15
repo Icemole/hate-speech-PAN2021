@@ -1,4 +1,4 @@
-import re, sys, os
+import re, sys, os, argparse
 
 ## Extracts the text from a line
 ## given the format of the PAN2021 competition.
@@ -10,10 +10,14 @@ def get_text_from_xml_line(line):
 
 ## Extracts all text from all .xml files of a single language
 ## passed as a parameter, given the format of the PAN2021 competition.
-def extract_lang(lang):
-    filepath = "data/" + lang + "/"
-    nonhaters_file = "data/nonhaters_" + lang + ".txt"
-    haters_file = "data/haters_" + lang + ".txt"
+def extract_lang(lang, group_writer):
+    filepath = "data/plain_text/"
+    if group_writer:
+        nonhaters_file = filepath + "nonhaters_" + lang + "_grouped.txt"
+        haters_file = filepath + "haters_" + lang + "_grouped.txt"
+    else:
+        nonhaters_file = filepath + "nonhaters_" + lang + ".txt"
+        haters_file = filepath + "haters_" + lang + ".txt"
     err_file = "data/err.txt"
 
     with open(nonhaters_file, "w") as f_nonhaters, \
@@ -36,15 +40,23 @@ def extract_lang(lang):
                 else:
                     # Unidentified class
                     f = f_err
-                for i in range(2, len(f_contents)): #1+ intended
+                for i in range(2, len(f_contents)):
                     text = get_text_from_xml_line(f_contents[i])
                     if text != None:
-                        f.write(text + "\n")
+                        if group_writer:
+                            f.write(text + " ")
+                        else:
+                            f.write(text + "\n")
+                if group_writer:
+                    f.write("\n")
             
 
 def main():
-    extract_lang("en")
-    extract_lang("es")
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--group_writer', type=bool, default=False)
+    args = parser.parse_args()
+    extract_lang("en", args.group_writer)
+    extract_lang("es", args.group_writer)
 
 
 if __name__ == "__main__":

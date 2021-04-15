@@ -4,7 +4,7 @@ from nltk.tokenize import TweetTokenizer
 
 def main():
     parser = argparse.ArgumentParser(description='Translator of news from Spanish to English')
-    parser.add_argument('--dataset', default='../data/nonhaters_es.txt',
+    parser.add_argument('--dataset', default='../data/plain_text/nonhaters_es.txt',
                         help='Path to dataset')
     args = parser.parse_args()
 

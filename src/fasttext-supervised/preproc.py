@@ -3,10 +3,10 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--c0_train', default='../../data/nonhaters_en.tok.train.txt')
-    parser.add_argument('--c1_train', default='../../data/haters_en.tok.train.txt')
-    parser.add_argument('--c0_eval', default='../../data/nonhaters_en.tok.eval.txt')
-    parser.add_argument('--c1_eval', default='../../data/haters_en.tok.eval.txt')
+    parser.add_argument('--c0_train', default='../../data/tok/nonhaters_en.tok.train.txt')
+    parser.add_argument('--c1_train', default='../../data/tok/haters_en.tok.train.txt')
+    parser.add_argument('--c0_eval', default='../../data/tok/nonhaters_en.tok.eval.txt')
+    parser.add_argument('--c1_eval', default='../../data/tok/haters_en.tok.eval.txt')
     parser.add_argument('--out_train', default='pan2021.train.en')
     parser.add_argument('--out_eval', default='pan2021.eval.en')
     args = parser.parse_args()

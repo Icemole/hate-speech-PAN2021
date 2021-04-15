@@ -36,10 +36,9 @@ def split_dataset(filepath, eval_percent, dev_percent, shuffle=True, seed=123):
             ftrain.writelines(lines[nlines_dev + nlines_eval:nlines_train + nlines_dev + nlines_eval])
 
 
-
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default='../data/nonhaters_es.tok.txt',
+    parser.add_argument('--dataset', default='../data/tok/nonhaters_es.tok.txt',
                         help='Path to dataset, requires that said dataset is split in lines')
     parser.add_argument('--eval_percent', type=float, default='0.1',
                         help='Percentage of lines assigned to the evaluation set')

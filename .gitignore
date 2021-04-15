@@ -1,16 +1,17 @@
-*.bin
 env/
+.idea/
+
+*.arpa
+*.bin
 
 ## Just in case, don't push data that we needed permission to get.
-data/en
-data/es
+data/original_dataset
 data/pan21-author-profiling-training-2021-03-14.zip
 
 data/err.txt
+
 models/
 results/
-
-.idea/
 
 src/simpletransformers-bert/cache/
 src/simpletransformers-bert/outputs/

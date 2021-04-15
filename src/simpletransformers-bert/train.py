@@ -6,10 +6,10 @@ from simpletransformers.classification import ClassificationModel
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--c0_train', default='../../data/nonhaters_en.tok.train.txt')
-    parser.add_argument('--c1_train', default='../../data/haters_en.tok.train.txt')
-    parser.add_argument('--c0_eval', default='../../data/nonhaters_en.tok.eval.txt')
-    parser.add_argument('--c1_eval', default='../../data/haters_en.tok.eval.txt')
+    parser.add_argument('--c0_train', default='../../data/tok/nonhaters_en.tok.train.txt')
+    parser.add_argument('--c1_train', default='../../data/tok/haters_en.tok.train.txt')
+    parser.add_argument('--c0_eval', default='../../data/tok/nonhaters_en.tok.eval.txt')
+    parser.add_argument('--c1_eval', default='../../data/tok/haters_en.tok.eval.txt')
     parser.add_argument('--model_args', default='bertweet-base.json')
     args = parser.parse_args()
 
