@@ -1,12 +1,15 @@
 #!/bin/bash
 
+ORDER="3 4"
+# ORDER=5
+
 for lang in en es
 do
 	echo ""
 	echo "######"
 	echo "  "${lang}
 	echo "######"
-	for order in 3 4
+	for order in $ORDER
 	do
 		echo "Order ${order}"
 		for ishater in "" non

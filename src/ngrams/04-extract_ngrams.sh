@@ -3,9 +3,12 @@
 rm -r ../../models/ngrams
 mkdir -p ../../models/ngrams/bin-lms
 
+ORDER="3 4"
+# ORDER=5
+
 for lang in en es
 do
-	for order in 3 4
+	for order in $ORDER
 	do
 		for ishater in "" non
 		do

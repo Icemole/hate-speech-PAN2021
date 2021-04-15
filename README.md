@@ -34,3 +34,32 @@ The whole project has several dependencies, most of which are covered by executi
 - `{hater}_{lang}.tok.txt`: all tokenized sentences
 - `{hater}_{lang}.tok.{part}.txt`: sentences divided in partitions
 - `{hater}_{lang}_grouped.*`: same but grouped as in data/plain_text
+
+## Extract and partition the data
+```bash
+# Extract the data (assuming you have the source files)
+tar xzf data.zip
+
+# Extract the sentences from the data
+python 01-extract_text.py
+
+# Clean the text
+python 02-clean.py
+
+# Split the dataset in a train/dev/eval partition
+python 03-split_dataset.py
+```
+
+## Example: n-grams
+```bash
+cd src/ngrams
+
+# Extract n-grams (modify $ORDER to )
+./04-extract_ngrams.sh
+
+# Obtain the accuracy of each developed n-gram with respect to the text
+./05-reco.sh
+
+# Get the accuracy
+./06-get_accuracy.sh
+```

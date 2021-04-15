@@ -1,5 +1,8 @@
 #!/bin/bash
 
+ORDER="3 4"
+# ORDER=5
+
 rm -r ../../results/ngrams
 mkdir -p ../../results/ngrams
 
