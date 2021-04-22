@@ -6,7 +6,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--train', default='pan2021.train.en')
     parser.add_argument('--eval', default='pan2021.eval.en')
-    parser.add_argument('--model_name', default='model.bin')
+    parser.add_argument('--model_name', default=None)
     parser.add_argument('--epochs', default=25)
     parser.add_argument('--ngram_order', default=4)
     parser.add_argument('--dim', default=50)
@@ -26,7 +26,8 @@ def main():
             f.write(str(model.test(args.eval)))
             f.write("\n")
             f.write("\n")
-    model.save_model(args.model_name)
+    if args.model_name is not None:
+        model.save_model(args.model_name)
 
 
 if __name__ == '__main__':
