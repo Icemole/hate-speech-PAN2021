@@ -25,7 +25,7 @@ def extract_lang(lang, filepath, group_writer):
         for xml in os.listdir(filepath):
             #print(filepath + xml)
             if xml == "truth.txt":
-                ## Not interested in this file (contains references)
+                # Not interested in this file (contains references)
                 continue
             with open(filepath + xml, "r") as f:
                 f_contents = list(f)
@@ -51,10 +51,20 @@ def extract_lang(lang, filepath, group_writer):
             
 
 def main():
+    def str2bool(v):
+        if isinstance(v, bool):
+            return v
+        if v.lower() == 'true':
+            return True
+        elif v.lower() == 'false':
+            return False
+        else:
+            raise argparse.ArgumentTypeError('Boolean value expected.')
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--extract_to',help='Path to dataset' default='data/plain_text/',
+    parser.add_argument('--extract_to', default='data/plain_text/',
                         help='Where to write the output of the data extraction')
-    parser.add_argument('--group_writer', type=bool, default=False,
+    parser.add_argument('--group_writer', type=str2bool, nargs='?', const=True, default=False,
                         help='If set to True, one line of the extracted text will correspond to all sentences of a single writer')
     args = parser.parse_args()
     extract_lang("en", args.extract_to, args.group_writer)
