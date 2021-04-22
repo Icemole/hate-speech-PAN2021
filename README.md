@@ -1,6 +1,6 @@
 # PAN 2021: Profiling Hate Speech Spreaders on Twitter
 
-This repository summarizes the work presented to the shared task ["Profiling Hate Speech Spreaders on Twitter"](https://pan.webis.de/clef21/pan21-web/author-profiling.html).
+This repository summarizes the work presented to the shared task ["Profiling Hate Speech Spreaders on Twitter"](https://pan.webis.de/clef21/pan21-web/author-profiling.html). Pull requests or issues are encouraged.
 
 ## What to find in this repository
 
@@ -72,3 +72,6 @@ cd src/ngrams
 # Get the accuracy
 ./06-get_accuracy.sh
 ```
+
+## DISCLAIMER
+The scripts provided in the `src/` directory are meant to be used as a guide. If you want to directly use them, you may want to adjust some things e.g. the directory where to launch them.
