@@ -29,6 +29,9 @@ mkdir out
 
 # Data extraction and cleaning
 python src/01-extract_text.py --extract_from $1 --extract_to tmp/plain_text
-python src/02-clean_wrapper.sh --dataset tmp/plain_text --write_to tmp/tok
+src/02-clean_helper.sh tmp/plain_text tmp/tok
 
 # Training
+src/ngrams/04-extract_ngrams_helper.sh data/tok/partitioned_data/ models/ngrams/bin-lms/
+src/ngrams/05-reco_helper.sh data/tok/partitioned_data/ results/ngrams/ models/ngrams/bin-lms/
+src/ngrams/06-get_accuracy.sh results/ngrams/
