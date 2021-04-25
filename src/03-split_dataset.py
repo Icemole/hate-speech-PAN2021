@@ -2,41 +2,58 @@ import argparse
 import random
 
 
-def split_dataset(filepath, eval_percent, dev_percent, extract_to, shuffle=True, seed=123):
+def split_dataset(filepath, eval_proportion, dev_proportion, extract_to, grouped, shuffle=True, block_size=100, seed=123):
     random.seed(seed)
     filename = filepath.rstrip("/").split("/")[-1]
+    if grouped:
+        filename_train = f"{filename.rsplit('.', 1)[0]}_grouped.train.{filename.rsplit('.', 1)[1]}"
+        filename_dev = f"{filename.rsplit('.', 1)[0]}_grouped.dev.{filename.rsplit('.', 1)[1]}"
+        filename_eval = f"{filename.rsplit('.', 1)[0]}_grouped.eval.{filename.rsplit('.', 1)[1]}"
+    else:
+        filename_train = f"{filename.rsplit('.', 1)[0]}.train.{filename.rsplit('.', 1)[1]}"
+        filename_dev = f"{filename.rsplit('.', 1)[0]}.dev.{filename.rsplit('.', 1)[1]}"
+        filename_eval = f"{filename.rsplit('.', 1)[0]}.eval.{filename.rsplit('.', 1)[1]}"
     extract_to += "/"
     
-    with open(filepath, 'r') as f, open(extract_to + f"{filename.rsplit('.', 1)[0]}.train.{filename.rsplit('.', 1)[1]}", 'w') as ftrain:
+    with open(filepath, 'r') as f, open(extract_to + filename_train, 'w') as ftrain:
         feval = None
-        if eval_percent > 0:
-            feval = open(extract_to + f"{filename.rsplit('.', 1)[0]}.eval.{filename.rsplit('.', 1)[1]}", 'w')
+        if eval_proportion > 0:
+            feval = open(extract_to + filename_eval, 'w')
         fdev = None
-        if dev_percent > 0:
-            fdev = open(extract_to + f"{filename.rsplit('.', 1)[0]}.dev.{filename.rsplit('.', 1)[1]}", 'w')
+        if dev_proportion > 0:
+            fdev = open(extract_to + filename_dev, 'w')
 
         nlines = len(f.readlines())
         f.seek(0)
 
-        nlines_eval = int(nlines * eval_percent)
-        nlines_dev = int(nlines * dev_percent)
+        nlines_eval = int(nlines * eval_proportion)
+        nlines_dev = int(nlines * dev_proportion)
         nlines_train = nlines - nlines_dev - nlines_eval
 
-        if shuffle:
-            for line in f.readlines():
-                r = random.uniform(0, nlines) if shuffle else 0
-                if r < nlines_eval:
-                    feval.write(line)
-                elif r < nlines_eval + nlines_dev:
-                    fdev.write(line)
-                else:
-                    ftrain.write(line)
-        else:
-            lines = f.readlines()
+        lines = f.readlines()
 
-            feval.writelines(lines[0:nlines_eval])
-            fdev.writelines(lines[nlines_dev: nlines_dev + nlines_eval])
-            ftrain.writelines(lines[nlines_dev + nlines_eval:nlines_train + nlines_dev + nlines_eval])
+        if shuffle:
+            # We want to preserve author order: 100 tweets per author
+            blocks = [lines[i:i+block_size] for i in range(0, len(lines), block_size)]
+            for block in blocks:
+                # Shuffle inside an author
+                random.shuffle(block)
+            # Shuffle all authors
+            random.shuffle(blocks)
+            lines[:] = [sent for block in blocks for sent in block]
+        
+        if grouped:
+            # An author is already a block as defined by this code
+            nlines_eval = int(nlines_eval / 100)
+            nlines_dev = int(nlines_dev / 100)
+            nlines_train = int(nlines_train / 100)
+
+            blocks = [lines[i:i+block_size] for i in range(0, len(lines), block_size)]
+            lines = [" ".join([sent.strip("\n") for sent in block]) + "\n" for block in blocks]
+        
+        feval.writelines(lines[0:nlines_eval])
+        fdev.writelines(lines[nlines_eval: nlines_eval + nlines_dev])
+        ftrain.writelines(lines[nlines_dev + nlines_eval:nlines_train + nlines_dev + nlines_eval])
         
         if fdev is not None:
             fdev.close()
@@ -45,18 +62,30 @@ def split_dataset(filepath, eval_percent, dev_percent, extract_to, shuffle=True,
 
 
 def main():
+    def str2bool(v):
+        if isinstance(v, bool):
+            return v
+        if v.lower() in ('yes', 'true', 't', 'y', '1'):
+            return True
+        elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+            return False
+        else:
+            raise argparse.ArgumentTypeError('Boolean value expected.')
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', default='../data/tok/nonhaters_es.tok.txt',
                         help='Path to dataset, requires that said dataset is split in lines')
-    parser.add_argument('--eval_percent', type=float, default='0.1',
+    parser.add_argument('--eval_proportion', type=float, default='0.1',
                         help='Percentage of lines assigned to the evaluation set')
-    parser.add_argument('--dev_percent', type=float, default='0.0',
+    parser.add_argument('--dev_proportion', type=float, default='0.0',
                         help='Percentage of lines assigned to the development set')
     parser.add_argument('--extract_to', default='data/tok/partitioned_data',
                         help='Path where to extract the split data')
+    parser.add_argument('--grouped', type=str2bool, nargs='?', const=True, default=False,
+                        help='One line will contain all tweets for an specific author')
     args = parser.parse_args()
     
-    split_dataset(args.dataset, args.eval_percent, args.dev_percent, args.extract_to, shuffle=True)
+    split_dataset(args.dataset, args.eval_proportion, args.dev_proportion, args.extract_to, args.grouped, shuffle=True)
 
 
 if __name__ == '__main__':

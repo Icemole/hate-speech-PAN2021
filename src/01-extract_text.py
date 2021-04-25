@@ -12,18 +12,15 @@ def get_text_from_xml_line(line):
 # passed as a parameter, given the format of the PAN2021 competition.
 def extract_lang(fr, to, group_writer):
     lang = fr.rstrip("/").split("/")[-1]
-    print(lang)
     if group_writer:
         nonhaters_file = to + "nonhaters_" + lang + "_grouped.txt"
         haters_file = to + "haters_" + lang + "_grouped.txt"
     else:
         nonhaters_file = to + "nonhaters_" + lang + ".txt"
         haters_file = to + "haters_" + lang + ".txt"
-    err_file = "data/err.txt"
 
     with open(nonhaters_file, "w") as f_nonhaters, \
-            open(haters_file, "w") as f_haters, \
-            open(err_file, "w") as f_err:
+            open(haters_file, "w") as f_haters:
         for xml in os.listdir(fr):
             #print(fr + xml)
             if xml == "truth.txt":
@@ -38,9 +35,7 @@ def extract_lang(fr, to, group_writer):
                 elif author_class == "1":
                     # Hater
                     f = f_haters
-                else:
-                    # Unidentified class
-                    f = f_err
+                
                 for i in range(2, len(f_contents)):
                     text = get_text_from_xml_line(f_contents[i])
                     if text != None:

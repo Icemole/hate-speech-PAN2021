@@ -5,11 +5,8 @@ IN_FILE=$1
 OUT_FILE=$2
 NONHATERS_LM_FILE=$3
 HATERS_LM_FILE=$4
-ORDER="3 4"
+ORDER="1 2 3 4"
 # ORDER=5
-
-rm -r ../../results/ngrams
-mkdir -p ../../results/ngrams
 
 query ${NONHATERS_LM_FILE} < ${IN_FILE} > tmp_reco_by_nonhaters.probs
 query ${HATERS_LM_FILE} < ${IN_FILE} > tmp_reco_by_haters.probs

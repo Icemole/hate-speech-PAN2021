@@ -1,6 +1,6 @@
 #!/bin/bash
-
-[ "$#" -ne 4 ] && echo "04-extract_ngrams.sh <in-tok-file> <out-lm-file> <order>" && exit 1
+echo $1 $2 $3 $4 $5 $6
+[ "$#" -ne 3 ] && echo "04-extract_ngrams.sh <in-tok-file> <out-lm-file> <order>" && exit 1
 
 IN_FILE=$1
 OUT_FILE=$2
