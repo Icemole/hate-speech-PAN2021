@@ -20,3 +20,5 @@ src/simpletransformers-bert/cache/
 src/simpletransformers-bert/outputs/
 src/simpletransformers-bert/runs/
 
+src/svm/*.vec
+
