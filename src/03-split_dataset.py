@@ -2,7 +2,7 @@ import argparse
 import random
 
 
-def split_dataset(filepath, eval_proportion, dev_proportion, extract_to, grouped, shuffle=True, block_size=100, seed=123):
+def split_dataset(filepath, eval_proportion, dev_proportion, extract_to, grouped, shuffle=True, block_size=200, seed=123):
     random.seed(seed)
     filename = filepath.rstrip("/").split("/")[-1]
     if grouped:
@@ -33,7 +33,7 @@ def split_dataset(filepath, eval_proportion, dev_proportion, extract_to, grouped
         lines = f.readlines()
 
         if shuffle:
-            # We want to preserve author order: 100 tweets per author
+            # We want to preserve author order: 200 tweets per author
             blocks = [lines[i:i+block_size] for i in range(0, len(lines), block_size)]
             for block in blocks:
                 # Shuffle inside an author
@@ -44,9 +44,9 @@ def split_dataset(filepath, eval_proportion, dev_proportion, extract_to, grouped
         
         if grouped:
             # An author is already a block as defined by this code
-            nlines_eval = int(nlines_eval / 100)
-            nlines_dev = int(nlines_dev / 100)
-            nlines_train = int(nlines_train / 100)
+            nlines_eval = int(nlines_eval / block_size)
+            nlines_dev = int(nlines_dev / block_size)
+            nlines_train = int(nlines_train / block_size)
 
             blocks = [lines[i:i+block_size] for i in range(0, len(lines), block_size)]
             lines = [" ".join([sent.strip("\n") for sent in block]) + "\n" for block in blocks]

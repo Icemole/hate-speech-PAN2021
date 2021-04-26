@@ -25,18 +25,17 @@ The whole project has several dependencies, most of which are covered by executi
 ## `data/` structure
 
 `data/plain_text/`
-- **Raw data: only sentences**
+- **Raw data (only sentences)**
 - `{hater}_{lang}.txt`: one sentence for each line
-- `{hater}_{lang}_grouped.txt`: each line has all sentences from a writer (i.e. 100 sentences per line)
 
 `data/tok/`
 - **Tokenized data by NLTK's `TweetTokenizer`**
 - `{hater}_{lang}.tok.txt`: all tokenized sentences
-- `{hater}_{lang}_grouped.tok.txt`: same but grouped as in data/plain_text
+- `{hater}_{lang}.tok_grouped.txt`: each line has all tokenized sentences from a writer (i.e. 100 tweets, or lines, become a single line)
 
 `data/tok/partitioned_data/`
 - `{hater}_{lang}.tok.{part}.txt`: sentences divided in partitions train/dev/eval
-- `{hater}_{lang}_grouped.{part}.tok.txt`: same but grouped as in data/plain_text
+- `{hater}_{lang}.{part}.tok_grouped.txt`: same but grouped as in `data/tok/`
 
 ## Extract and partition the data
 ```bash

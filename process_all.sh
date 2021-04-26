@@ -30,6 +30,7 @@ mkdir out
 # Data extraction and cleaning
 python src/01-extract_text.py --extract_from $1 --extract_to tmp/plain_text
 src/02-clean_helper.sh tmp/plain_text tmp/tok
+#src/03-split_dataset_helper.sh data/tok 0.1 0.05 data/tok/partitioned_data --grouped
 
 # Training
 src/ngrams/04-extract_ngrams_helper.sh data/tok/partitioned_data/ models/ngrams/bin-lms/
