@@ -1,6 +1,9 @@
 env/
 .idea/
 .vscode/
+.DS_Store
+src/.DS_Store
+src/__pycache__/
 
 *.arpa
 *.bin
@@ -19,4 +22,6 @@ src/fasttext-supervised/pan2021*
 src/simpletransformers-bert/cache/
 src/simpletransformers-bert/outputs/
 src/simpletransformers-bert/runs/
+
+src/svm/*.vec
 

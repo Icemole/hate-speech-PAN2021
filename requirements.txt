@@ -3,3 +3,5 @@ pandas
 #torch
 nltk
 fasttext
+emoji
+sklearn
