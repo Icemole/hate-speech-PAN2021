@@ -13,13 +13,16 @@ def vectorize_count(train_df, eval_df):
     return train_vectors, eval_vectors
 
 
-def vectorize_fasttext(train_df, eval_df, lang="en"):
+def vectorize_fasttext(train_df, eval_df, lang, c0_train, c1_train):
+    # TODO use different pretrained vectors depending on the language
     if lang == "es":
-        pretrained = fasttext.train_unsupervised("../../data/tok/haters_es.tok.train.txt", model='skipgram',
-                                                 lr=0.05, dim=300, ws=5, epoch=5)
+        pretrained = fasttext.train_unsupervised(c1_train, model='skipgram',
+                                                 lr=0.05, dim=300, ws=5, epoch=10,
+                                                 pretrainedVectors="wiki-news-300d-1M.vec")
     else:
-        pretrained = fasttext.train_unsupervised("../../data/tok/haters_en.tok.train.txt", model='skipgram',
-                                                 lr=0.05, dim=300, ws=5, epoch=5)
+        pretrained = fasttext.train_unsupervised(c1_train, model='skipgram',
+                                                 lr=0.05, dim=300, ws=5, epoch=10,
+                                                 pretrainedVectors="wiki-news-300d-1M.vec")
 
 
     train_vectors = [pretrained.get_sentence_vector(text.replace('\n', '')) for text in list(train_df['text'])]
@@ -46,7 +49,7 @@ def main():
     parser.add_argument('--c1_train', default="../../data/tok/haters_en.tok.train.txt")
     parser.add_argument('--c0_eval', default="../../data/tok/nonhaters_en.tok.eval.txt")
     parser.add_argument('--c1_eval', default="../../data/tok/haters_en.tok.eval.txt")
-    parser.add_argument('--vectorization', choices=["count", "fasttext"], default="count")
+    parser.add_argument('--vectorization', choices=["count", "fasttext"], default="fasttext")
     parser.add_argument('--lang', choices=["en", "es"], default="en")
     args = parser.parse_args()
 
@@ -57,7 +60,8 @@ def main():
     eval_df = get_dataset_df(args.c0_eval, args.c1_eval)
     # Vectorize
     if args.vectorization == "fasttext":
-        train_vectors, eval_vectors = vectorize_fasttext(train_df, eval_df, lang=args.lang)
+        train_vectors, eval_vectors = vectorize_fasttext(train_df, eval_df, lang=args.lang, c0_train=args.c0_train,
+                                                         c1_train=args.c1_train)
     else:
         train_vectors, eval_vectors = vectorize_count(train_df, eval_df)
     # Train
