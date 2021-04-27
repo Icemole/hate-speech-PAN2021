@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ "$#" -ne 1 ] && echo "06-get_accuracy_wrapper.sh <reco-dir>" && exit 1
+[ "$#" -ne 1 ] && echo "07-get_accuracy_wrapper.sh <reco-dir>" && exit 1
 
 RECO_DIR=$1
 ORDER="2 3 4 5 6"
