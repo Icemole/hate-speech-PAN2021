@@ -1,4 +1,17 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+
+
+def load_prediction_file(path):
+    with open(path, 'r') as f:
+        text = []
+        labels = []
+        for line in f.readlines():
+            t, l = line.split('\t')
+            text.append(t)
+            labels.append(l)
+        df = pd.DataFrame({'text': text, 'labels': labels})
+        return df
 
 
 def get_dataset_df(c0_dataset, c1_dataset):
@@ -25,16 +38,19 @@ def author_estimation_boxplot(predictions_df, ground_truth_df):
     c0_labels_auth_c0 = []
     c1_labels_auth_c1 = []
     for i in range(0, aligned_df.shape[0], 200):
-        if aligned_df['labels_ground_truth'] == 0:
+        if aligned_df['labels_ground_truth'][i] == 0:
             c0_labels_auth_c0.append(sum(1 for label in aligned_df['labels_predicted'][i:i+200] if label == 0))
         else:
             c1_labels_auth_c1.append(sum(1 for label in aligned_df['labels_predicted'][i:i+200] if label == 1))
 
-
-    auth_estimation_df = pd.DataFrame({'nonhater_tweets_predicted_for_nonhater_auth': c0_labels_auth_c0,
-                                       'hater_tweets_predicted_for_hater_auth': c1_labels_auth_c1})
-    auth_estimation_df.boxplot(column=['nonhater_tweets_predicted_for_nonhater_auth',
-                                       'hater_tweets_predicted_for_hater_auth'])
+    auth_estimation_df_nonhater = pd.Series(c0_labels_auth_c0, name='nonhater_tweets_predicted_for_nonhater_auth')
+    auth_estimation_df_hater = pd.Series(c1_labels_auth_c1, name='hater_tweets_predicted_for_hater_auth')
+    df = pd.concat([auth_estimation_df_nonhater, auth_estimation_df_hater], axis=1)
+    axes = df.boxplot(column=['nonhater_tweets_predicted_for_nonhater_auth', 'hater_tweets_predicted_for_hater_auth'],
+                      vert=False, return_type='axes')
+    #auth_estimation_df_hater = pd.DataFrame({'hater_tweets_predicted_for_hater_auth': c1_labels_auth_c1})
+    #auth_estimation_df_hater.boxplot(column=['hater_tweets_predicted_for_hater_auth'], vert=False, ax=axes)
+    plt.show()
 
 
 if __name__ == '__main__':
