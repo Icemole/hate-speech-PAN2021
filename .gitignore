@@ -10,7 +10,9 @@ src/__pycache__/
 
 ## Just in case, don't push data that we needed permission to get.
 data/original_dataset
+data/original_dataset_test
 data/pan21-author-profiling-training-2021-03-14.zip
+data/pan21-author-profiling-test-without-gold.zip
 
 data/err.txt
 
