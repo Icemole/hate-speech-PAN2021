@@ -14,21 +14,37 @@ def load_prediction_file(path):
         return df
 
 
-def get_dataset_df(c0_dataset, c1_dataset):
+def get_dataset_df(c0_dataset, c1_dataset, with_authors=False):
     # Build training dataframe
     labels = []
     text = []
-    with open(c0_dataset, 'r') as f:
-        for line in f.readlines():
-            # Taking 'nonhater' as 0 and 'hater' as 1
-            labels.append(0)
-            text.append(line)
-    with open(c1_dataset, 'r') as f:
-        for line in f.readlines():
-            # Taking 'nonhater' as 0 and 'hater' as 1
-            labels.append(1)
-            text.append(line)
-    df = pd.DataFrame({'labels': labels, 'text': text})
+    if with_authors:
+        authors = []
+        with open(c0_dataset, 'r') as f:
+            for line in f.readlines():
+                # Taking 'nonhater' as 0 and 'hater' as 1
+                labels.append(0)
+                text.append(line.split('\t')[1].replace('\n', ''))
+                authors.append(line.split('\t')[0])
+        with open(c1_dataset, 'r') as f:
+            for line in f.readlines():
+                # Taking 'nonhater' as 0 and 'hater' as 1
+                labels.append(1)
+                text.append(line.split('\t')[1].replace('\n', ''))
+                authors.append(line.split('\t')[0])
+        df = pd.DataFrame({'labels': labels, 'text': text, 'authors': authors})
+    else:
+        with open(c0_dataset, 'r') as f:
+            for line in f.readlines():
+                # Taking 'nonhater' as 0 and 'hater' as 1
+                labels.append(0)
+                text.append(line.replace('\n', ''))
+        with open(c1_dataset, 'r') as f:
+            for line in f.readlines():
+                # Taking 'nonhater' as 0 and 'hater' as 1
+                labels.append(1)
+                text.append(line.replace('\n', ''))
+        df = pd.DataFrame({'labels': labels, 'text': text})
     return df
 
 
@@ -48,8 +64,6 @@ def author_estimation_boxplot(predictions_df, ground_truth_df):
     df = pd.concat([auth_estimation_df_nonhater, auth_estimation_df_hater], axis=1)
     axes = df.boxplot(column=['nonhater_tweets_predicted_for_nonhater_auth', 'hater_tweets_predicted_for_hater_auth'],
                       vert=False, return_type='axes')
-    #auth_estimation_df_hater = pd.DataFrame({'hater_tweets_predicted_for_hater_auth': c1_labels_auth_c1})
-    #auth_estimation_df_hater.boxplot(column=['hater_tweets_predicted_for_hater_auth'], vert=False, ax=axes)
     plt.show()
 
 

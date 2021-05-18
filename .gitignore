@@ -4,6 +4,7 @@ env/
 .DS_Store
 src/.DS_Store
 src/__pycache__/
+wiki-news-300d-1M.vec
 
 *.arpa
 *.bin
