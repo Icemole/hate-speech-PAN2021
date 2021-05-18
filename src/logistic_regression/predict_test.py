@@ -1,5 +1,5 @@
 import argparse
-from src.utilities import get_dataset_df
+from src.utilities import get_dataset_df, get_test_dataset_df
 from src.svm.svm import vectorize_tfidf, vectorize_fasttext
 from sklearn.linear_model import LogisticRegression
 
@@ -14,17 +14,16 @@ def main():
     parser = argparse.ArgumentParser(description='Logistic regression model for tweet author profiling')
     parser.add_argument('--c0_train', default="../../data/tok/nonhaters_en.tok.txt")
     parser.add_argument('--c1_train', default="../../data/tok/haters_en.tok.txt")
-    parser.add_argument('--c0_test', default="../../data/tok/test/nonhaters_en.tok.txt")
-    parser.add_argument('--c1_test', default="../../data//tok/test/haters_en.tok.txt")
+    parser.add_argument('--test', default="../../data/tok/test/en.tok.txt")
     parser.add_argument('--fasttext', default=False)
     parser.add_argument('--lang', default='en')
-    parser.add_argument('--out', default='Nahuel-Martin_logistic_regression_en.txt')
+    parser.add_argument('--out', default='Nahuel-Martin_svm_en2.txt')
     args = parser.parse_args()
 
 
     # Load training datafame and evaluation dataframe
     train_df = get_dataset_df(args.c0_train, args.c1_train, with_authors=False)
-    test_df = get_dataset_df(args.c0_test, args.c1_test, with_authors=True)
+    test_df = get_test_dataset_df(args.test)
 
     # Vectorize datasets
     if args.fasttext:

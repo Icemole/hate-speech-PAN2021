@@ -14,6 +14,17 @@ def load_prediction_file(path):
         return df
 
 
+def get_test_dataset_df(dataset):
+    text = []
+    authors = []
+    with open(dataset, 'r') as f:
+        for line in f.readlines():
+            text.append(line.split('\t')[1].replace('\n', ''))
+            authors.append(line.split('\t')[0])
+    df = pd.DataFrame({'text': text, 'authors': authors})
+    return df
+
+
 def get_dataset_df(c0_dataset, c1_dataset, with_authors=False):
     # Build training dataframe
     labels = []
