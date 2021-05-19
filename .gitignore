@@ -17,6 +17,8 @@ data/pan21-author-profiling-test-without-gold.zip
 
 data/err.txt
 
+test-xmls/
+graphs/
 models/
 results/
 
