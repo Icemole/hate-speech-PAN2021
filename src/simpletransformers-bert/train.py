@@ -2,15 +2,16 @@ import argparse
 import json
 import pandas as pd
 from simpletransformers.classification import ClassificationModel
-
+from src.utilities import author_estimation_boxplot
+from sklearn.metrics import classification_report
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--c0_train', default='../../data/tok/nonhaters_en.tok.train.txt')
-    parser.add_argument('--c1_train', default='../../data/tok/haters_en.tok.train.txt')
-    parser.add_argument('--c0_eval', default='../../data/tok/nonhaters_en.tok.eval.txt')
-    parser.add_argument('--c1_eval', default='../../data/tok/haters_en.tok.eval.txt')
-    parser.add_argument('--model_args', default='roberta-base.json')
+    parser.add_argument('--c0_train', default='../../data/tok/partitioned_data/nonhaters_es.tok.train.txt')
+    parser.add_argument('--c1_train', default='../../data/tok/partitioned_data/haters_es.tok.train.txt')
+    parser.add_argument('--c0_eval', default='../../data/tok/partitioned_data/nonhaters_es.tok.eval.txt')
+    parser.add_argument('--c1_eval', default='../../data/tok/partitioned_data/haters_es.tok.eval.txt')
+    parser.add_argument('--model_args', default='bert-multilingual-cased.json')
     args = parser.parse_args()
 
     # Build training dataframe
@@ -59,6 +60,14 @@ def main():
     # Evaluate model on evaluation df
     result, model_outputs, wrong_predictions = model.eval_model(eval_df)
     print(result)
+    # Predict vectors
+    prediction = model.predict(eval_df['text'])[0]
+
+    print(classification_report(eval_df["labels"], prediction))
+
+    print("\n###### Author tweet labeling distribution as boxplots - EVAL ######")
+    author_estimation_boxplot(ground_truth_df=eval_df,
+                              predictions_df=pd.DataFrame({"text": eval_df["text"], "labels": prediction}))
 
 
 if __name__ == '__main__':
